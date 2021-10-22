@@ -1,12 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Button, Grid, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { GitHub } from '@mui/icons-material';
+import { useDispatch, useSelector } from 'react-redux';
 import styles from './LoginPage.module.css';
 import octo from '../../assets/images/Professortocat_v2.png';
 import { loginUrl } from '../../repositories/auth.repo';
+import { tryAuthenticate } from './authSlice';
 
 const LoginPage = () => {
+  const { token } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const params = new URLSearchParams(useLocation().search);
+
+  useEffect(() => {
+    const oauthCode = params.get('code');
+
+    // Authenticate user
+    dispatch(tryAuthenticate(oauthCode));
+  }, [token]);
+
   // Redirect to github oauth sign in page
   const onBtnLoginTap = () => {
     window.location.href = loginUrl();

@@ -12,11 +12,13 @@ import {
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import auth from '../pages/auth/authSlice';
-import restApi from './rest_api';
+import home from '../pages/home/homeSlice';
+import restApi from './restApi';
 
 // Reducer lists
 const reducer = combineReducers({
   auth,
+  home,
 });
 
 // Configure redux-persist
