@@ -1,0 +1,15 @@
+.container {
+  height: 100vh;
+  background: rgb(5,4,75);
+  background: linear-gradient(216deg, rgba(5,4,75,1) 0%, rgba(33,31,177,1) 100%);
+}
+
+.logoGrid {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoGrid img {
+  height: 50vh;
+}
