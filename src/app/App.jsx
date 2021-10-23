@@ -5,12 +5,13 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { BrowserRouter } from 'react-router-dom';
 import Router from './Router';
 import store, { persistor } from '../services/store';
+import { Config } from './Config';
 
 const App = () => (
   <Provider store={store}>
     <PersistGate persistor={persistor}>
       <CssBaseline />
-      <BrowserRouter>
+      <BrowserRouter basename={Config.APP_BASE_NAME}>
         <Router />
       </BrowserRouter>
     </PersistGate>
