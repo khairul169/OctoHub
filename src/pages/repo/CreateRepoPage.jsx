@@ -25,8 +25,12 @@ const CreateRepoPage = () => {
     const formData = new FormData(e.target);
     const object = {};
     formData.forEach((value, key) => { object[key] = value; });
+
+    // Set auto initialize project with readme
+    object.auto_init = true;
     const json = JSON.stringify(object);
 
+    // Dispatch create repository
     dispatch(createRepository(json));
   };
 

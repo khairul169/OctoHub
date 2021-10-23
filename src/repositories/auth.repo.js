@@ -5,7 +5,7 @@ import { Config } from '../app/Config';
 export const loginUrl = () => {
   const clientId = Config.GITHUB_API_CLIENT;
   const redir = `${Config.APP_BASE_URL}/auth/login`;
-  const scopes = 'repo,notifications,user';
+  const scopes = 'repo,notifications,user,delete_repo';
   return `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redir}&scope=${scopes}`;
 };
 

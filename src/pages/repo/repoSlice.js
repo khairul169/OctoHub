@@ -3,6 +3,7 @@ import {
   getRepository, getRepositoryReadme,
   createRepository as createRepo,
   updateRepository as updateRepo,
+  deleteRepository as deleteRepo,
 } from '../../repositories/repository.repo';
 
 /**
@@ -16,6 +17,7 @@ const initialState = {
   // Repo operation states
   createState: null,
   updateState: null,
+  deleteState: null,
 };
 
 /**
@@ -38,10 +40,7 @@ export const fetchRepository = createAsyncThunk(
 
 // Initialize new repository with readme template
 export const createRepository = createAsyncThunk(
-  'auth/createRepository', async (formData) => (await createRepo({
-    ...formData,
-    auto_init: true,
-  })).data.full_name,
+  'auth/createRepository', async (formData) => (await createRepo(formData)).data.full_name,
 );
 
 export const updateRepository = createAsyncThunk(
@@ -54,6 +53,10 @@ export const updateRepository = createAsyncThunk(
     dispatch(fetchRepository(data.full_name));
     return true;
   },
+);
+
+export const deleteRepository = createAsyncThunk(
+  'auth/deleteRepository', async (name) => (await deleteRepo(name)).data,
 );
 
 /**
@@ -72,6 +75,9 @@ export const homeSlice = createSlice({
     },
     clearUpdateState: (state) => {
       state.updateState = null;
+    },
+    clearDeleteState: (state) => {
+      state.deleteState = null;
     },
   },
   extraReducers: (builder) => builder
@@ -93,9 +99,21 @@ export const homeSlice = createSlice({
     })
     .addCase(updateRepository.fulfilled, (state) => {
       state.updateState = { status: true, message: 'Sukses mengupdate repository!' };
+    })
+    // On Delete Repo
+    .addCase(deleteRepository.rejected, (state) => {
+      state.deleteState = { status: false, message: 'Gagal menghapus repository!' };
+    })
+    .addCase(deleteRepository.fulfilled, (state) => {
+      state.deleteState = { status: true, message: 'Sukses menghapus repository!' };
     }),
 });
 
-export const { clearRepoState, clearCreateState, clearUpdateState } = homeSlice.actions;
+export const {
+  clearRepoState,
+  clearCreateState,
+  clearUpdateState,
+  clearDeleteState,
+} = homeSlice.actions;
 
 export default homeSlice.reducer;
