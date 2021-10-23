@@ -22,11 +22,7 @@ const SearchUserPage = () => {
     if (query && query.length) {
       dispatch(fetchUsersByQuery(query));
     }
-
-    console.log(query);
   }, []);
-
-  console.log(users);
 
   return (
     <Box>

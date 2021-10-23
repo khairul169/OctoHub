@@ -18,7 +18,6 @@ const Router = () => {
   useEffect(() => {
     if (isLoggedIn) {
       dispatch(fetchUserInfo());
-      console.log(token);
     }
   }, [token]);
 
