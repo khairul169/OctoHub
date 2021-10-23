@@ -7,18 +7,20 @@ import {
 import { Box } from '@mui/system';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import Header from '../../components/Header';
 import StatsCardItem from '../../components/StatsCardItem';
 import { fetchUserData } from './homeSlice';
 
 const HomePage = () => {
+  const { userName } = useParams();
+
   // States
   const { user, repositories } = useSelector((state) => state.home);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchUserData());
+    dispatch(fetchUserData(userName));
   }, []);
 
   return (
@@ -35,18 +37,24 @@ const HomePage = () => {
                 <Typography>{user.login}</Typography>
               </Box>
               <Divider sx={{ my: 2 }} />
+              {user.location && (
               <ListItem disableGutters dense>
                 <ListItemIcon><LocationOn /></ListItemIcon>
                 <ListItemText>{user.location}</ListItemText>
               </ListItem>
+              )}
+              {user.blog && (
               <ListItem disableGutters dense>
                 <ListItemIcon><Language /></ListItemIcon>
                 <ListItemText>{user.blog}</ListItemText>
               </ListItem>
+              )}
+              {user.email && (
               <ListItem disableGutters dense>
                 <ListItemIcon><AlternateEmail /></ListItemIcon>
                 <ListItemText>{user.email}</ListItemText>
               </ListItem>
+              )}
             </Grid>
           </>
           )}
