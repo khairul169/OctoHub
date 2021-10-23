@@ -2,7 +2,7 @@ import {
   AlternateEmail, Book, EmojiEmotions, Inbox, Language, LocationOn, ThumbUpAlt,
 } from '@mui/icons-material';
 import {
-  Avatar, Container, Divider, Grid, ListItem, ListItemIcon, ListItemText, Paper, Typography,
+  Avatar, Button, Container, Divider, Grid, ListItem, ListItemIcon, ListItemText, Paper, Typography,
 } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useEffect } from 'react';
@@ -89,10 +89,24 @@ const HomePage = () => {
               </>
               )}
             </Box>
-            <Box sx={{ mt: 4 }}>
-              <Typography variant="h5" sx={{ mb: 2 }}>
-                Repository
-              </Typography>
+            <Box sx={{ mt: 6 }}>
+              <div style={{
+                display: 'flex', justifyContent: 'space-between', alignItems: 'end', marginBottom: 16,
+              }}
+              >
+                <Typography variant="h5">
+                  Repository
+                </Typography>
+                <Button
+                  component={Link}
+                  to="/repo/create"
+                  startIcon={<Inbox />}
+                  variant="contained"
+                  size="large"
+                >
+                  Buat
+                </Button>
+              </div>
               {repositories && (
               <Grid container spacing={2}>
                 {repositories.map((item) => (

@@ -12,6 +12,8 @@ export const getRepositoryReadme = async (repo) => {
   return axios.get(url);
 };
 
+export const createRepository = async (data) => restApi.post('/user/repos', data);
+
 export const updateRepository = async (name, data) => restApi.patch(`/repos/${name}`, data);
 
 export default {

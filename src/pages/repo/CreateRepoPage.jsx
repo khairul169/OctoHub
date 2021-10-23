@@ -4,45 +4,52 @@ import {
 import { Box } from '@mui/system';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import Header from '../../components/Header';
-import { clearUpdateState, updateRepository } from './repoSlice';
+import { clearCreateState, createRepository } from './repoSlice';
 
-const UpdateRepoPage = () => {
+const CreateRepoPage = () => {
   // States
-  const { data: repo, updateState } = useSelector((state) => state.repo);
+  const { createState } = useSelector((state) => state.repo);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   useEffect(() => {
-    dispatch(clearUpdateState());
+    dispatch(clearCreateState());
   }, []);
 
   const onFormSubmit = (e) => {
     e.preventDefault();
 
-    // Patch repository
+    // Create new repository
     const formData = new FormData(e.target);
     const object = {};
     formData.forEach((value, key) => { object[key] = value; });
     const json = JSON.stringify(object);
 
-    dispatch(updateRepository(json));
+    dispatch(createRepository(json));
   };
+
+  useEffect(() => {
+    // Redirect to home on success
+    if (createState && createState.status) {
+      dispatch(clearCreateState());
+      history.push(`/repo/${createState.repoName}`);
+    }
+  }, [createState]);
 
   return (
     <Box>
       <Header />
       <Container component="main" sx={{ py: 8 }}>
-        {repo && (
         <Grid container>
           <Grid item xs={false} lg={3} />
           <Grid item xs={12} lg={6}>
-            <Typography variant="h5">Update Repository</Typography>
+            <Typography variant="h5">Buat Repository</Typography>
             <Divider sx={{ my: 1 }} />
-            <Typography>{repo.full_name}</Typography>
 
-            {updateState && (
-              <Alert sx={{ mt: 3 }} severity={updateState.status ? 'success' : 'error'}>{updateState.message}</Alert>
+            {createState && (
+              <Alert sx={{ mt: 3 }} severity={createState.status ? 'success' : 'error'}>{createState.message}</Alert>
             )}
 
             <form onSubmit={onFormSubmit}>
@@ -53,7 +60,6 @@ const UpdateRepoPage = () => {
                 name="name"
                 label="Nama Repository"
                 sx={{ mt: 6 }}
-                defaultValue={repo.name}
               />
 
               <TextField
@@ -65,24 +71,22 @@ const UpdateRepoPage = () => {
                 multiline
                 rows={3}
                 sx={{ mt: 3 }}
-                defaultValue={repo.description}
               />
 
               <Grid container sx={{ mt: 4 }} spacing={2}>
                 <Grid item xs={12} sm={6}>
-                  <Button component={Link} to={`/repo/${repo.full_name}`} fullWidth variant="outlined" size="large">Kembali</Button>
+                  <Button component={Link} to="/" fullWidth variant="outlined" size="large">Kembali</Button>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <Button type="submit" fullWidth variant="contained" size="large">Update</Button>
+                  <Button type="submit" fullWidth variant="contained" size="large">Submit</Button>
                 </Grid>
               </Grid>
             </form>
           </Grid>
         </Grid>
-        )}
       </Container>
     </Box>
   );
 };
 
-export default UpdateRepoPage;
+export default CreateRepoPage;

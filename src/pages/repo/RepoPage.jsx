@@ -10,7 +10,7 @@ import ReactMarkdown from 'react-markdown';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import Header from '../../components/Header';
-import { fetchRepository } from './repoSlice';
+import { fetchRepository, clearRepoState } from './repoSlice';
 
 const RepoPage = () => {
   const { userName, repoName } = useParams();
@@ -20,6 +20,7 @@ const RepoPage = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(clearRepoState());
     dispatch(fetchRepository(`${userName}/${repoName}`));
   }, []);
 
