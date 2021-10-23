@@ -36,6 +36,12 @@ export const fetchUserData = createAsyncThunk(
 export const homeSlice = createSlice({
   name: 'auth',
   initialState,
+  reducers: {
+    clearUserState: (state) => {
+      state.user = null;
+      state.repositories = [];
+    },
+  },
   extraReducers: (builder) => builder
     .addCase(fetchUserData.fulfilled, (state, action) => {
       // Set user data
@@ -43,5 +49,7 @@ export const homeSlice = createSlice({
       state.repositories = action.payload.repositories || [];
     }),
 });
+
+export const { clearUserState } = homeSlice.actions;
 
 export default homeSlice.reducer;

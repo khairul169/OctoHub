@@ -6,6 +6,7 @@ import { Box } from '@mui/system';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { Config } from '../app/Config';
 import octo from '../assets/images/Professortocat_v2.png';
 import SearchBar from './SearchBar';
 
@@ -39,7 +40,9 @@ const Header = () => {
               OctoHub
             </Typography>
           </Link>
-          <SearchBar />
+          <form action={`${Config.APP_BASE_URL}/search`} method="GET">
+            <SearchBar />
+          </form>
           <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'end' }}>
             <Button
               color="inherit"

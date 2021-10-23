@@ -10,26 +10,28 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams, Link } from 'react-router-dom';
 import Header from '../../components/Header';
 import StatsCardItem from '../../components/StatsCardItem';
-import { fetchUserData } from './homeSlice';
+import { clearUserState, fetchUserData } from './homeSlice';
 
 const HomePage = () => {
   const { userName } = useParams();
 
   // States
+  const myUser = useSelector((state) => state.auth.user);
   const { user, repositories } = useSelector((state) => state.home);
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(clearUserState());
     dispatch(fetchUserData(userName));
   }, []);
 
   return (
     <Box>
       <Header />
-      <Container component="main" sx={{ py: 8 }}>
-        <Grid container spacing={3}>
-          {user && (
-          <>
+      {user && (
+      <>
+        <Container component="main" sx={{ py: 8 }}>
+          <Grid container spacing={3}>
             <Grid item xs={12} md={3}>
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <Avatar src={user.avatar_url} sx={{ width: 128, height: 128 }} />
@@ -56,13 +58,9 @@ const HomePage = () => {
               </ListItem>
               )}
             </Grid>
-          </>
-          )}
-          <Grid item xs={false} lg={1} />
-          <Grid item xs={12} md={8}>
-            <Box>
-              {user && (
-              <>
+            <Grid item xs={false} lg={1} />
+            <Grid item xs={12} md={8}>
+              <Box>
                 <Typography variant="h5" sx={{ mb: 2 }}>
                   Rincian Pengguna
                 </Typography>
@@ -86,58 +84,60 @@ const HomePage = () => {
                     icon={EmojiEmotions}
                   />
                 </Grid>
-              </>
-              )}
-            </Box>
-            <Box sx={{ mt: 6 }}>
-              <div style={{
-                display: 'flex', justifyContent: 'space-between', alignItems: 'end', marginBottom: 16,
-              }}
-              >
-                <Typography variant="h5">
-                  Repository
-                </Typography>
-                <Button
-                  component={Link}
-                  to="/repo/create"
-                  startIcon={<Inbox />}
-                  variant="contained"
-                  size="large"
+              </Box>
+              <Box sx={{ mt: 6 }}>
+                <div style={{
+                  display: 'flex', justifyContent: 'space-between', alignItems: 'end', marginBottom: 16,
+                }}
                 >
-                  Buat
-                </Button>
-              </div>
-              {repositories && (
-              <Grid container spacing={2}>
-                {repositories.map((item) => (
-                  <Grid item xs={12} sm={6} md={4}>
-                    <Link to={`/repo/${item.full_name}`}>
-                      <Paper elevation={3} sx={{ p: 2 }}>
-                        <div style={{ display: 'flex' }}>
-                          <Book sx={{ mr: 1 }} />
-                          <Typography color="primary">{item.name}</Typography>
-                        </div>
-                        <Typography
-                          sx={{
-                            mt: 1,
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            height: 40,
-                          }}
-                          variant="subtitle2"
-                        >
-                          {item.description}
-                        </Typography>
-                      </Paper>
-                    </Link>
-                  </Grid>
-                ))}
-              </Grid>
-              )}
-            </Box>
+                  <Typography variant="h5">
+                    Repository
+                  </Typography>
+                  {(user.id === myUser.id) && (
+                  <Button
+                    component={Link}
+                    to="/repo/create"
+                    startIcon={<Inbox />}
+                    variant="contained"
+                    size="large"
+                  >
+                    Buat
+                  </Button>
+                  ) }
+                </div>
+                {repositories && (
+                <Grid container spacing={2}>
+                  {repositories.map((item) => (
+                    <Grid item xs={12} sm={6} md={4}>
+                      <Link to={`/repo/${item.full_name}`}>
+                        <Paper elevation={3} sx={{ p: 2 }}>
+                          <div style={{ display: 'flex' }}>
+                            <Book sx={{ mr: 1 }} />
+                            <Typography color="primary">{item.name}</Typography>
+                          </div>
+                          <Typography
+                            sx={{
+                              mt: 1,
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              height: 40,
+                            }}
+                            variant="subtitle2"
+                          >
+                            {item.description}
+                          </Typography>
+                        </Paper>
+                      </Link>
+                    </Grid>
+                  ))}
+                </Grid>
+                )}
+              </Box>
+            </Grid>
           </Grid>
-        </Grid>
-      </Container>
+        </Container>
+      </>
+      )}
     </Box>
   );
 };

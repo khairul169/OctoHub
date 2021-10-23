@@ -51,7 +51,8 @@ const SearchBar = () => (
     <TextInput
       fullWidth
       placeholder="Cari user/repository..."
-      inputProps={{ 'aria-label': 'search' }}
+      inputProps={{ id: 'query', name: 'query' }}
+      autoComplete="off"
     />
   </SearchBarContainer>
 );
